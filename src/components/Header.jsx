@@ -1,17 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { AppBar, Toolbar, IconButton, Typography, Box, Drawer, InputBase, useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { darkTheme, lightTheme } from '../themes/ModeThemes';
 import HomeIcon from '@mui/icons-material/Home';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SearchIcon from '@mui/icons-material/Search';
 import headerStyles from '../styles/HeaderStyle';
+import TheamToggleButton from './TheamToggleButton';
 
 
 
-const Header = () => {
+const Header = ({ darkMode, setDarkMode }) => {
 
-    const theme = useTheme();
+    const theme = useMemo(() => (darkMode ? darkTheme : lightTheme), [darkMode]);
     const isTablet = useMediaQuery(theme.breakpoints.up('sm'));
     const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
@@ -31,10 +32,13 @@ const Header = () => {
                                 <InputBase placeholder="Search…" sx={headerStyles.searchInput} />
                             </Box>
                         ) : (
-                            <IconButton sx={headerStyles.iconButton} onClick={() => setMobileSearchOpen(true)}><SearchIcon /></IconButton>
-                        )}
-                        <IconButton sx={headerStyles.iconButton}><FavoriteIcon /></IconButton>
-                        <IconButton sx={headerStyles.iconButton}><LogoutIcon /></IconButton>
+                            <IconButton sx={headerStyles.iconButton} onClick={() => setMobileSearchOpen(true)}><SearchIcon /></IconButton>)}
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <IconButton sx={headerStyles.iconButton}><FavoriteIcon /></IconButton>
+                            {/* Theme toggle icon here if added */}
+                            <IconButton sx={headerStyles.iconButton}><LogoutIcon /></IconButton>
+                            <TheamToggleButton darkMode={darkMode} setDarkMode={setDarkMode} />
+                        </Box>
                     </Box>
                 </Toolbar>
 

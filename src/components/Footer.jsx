@@ -1,12 +1,13 @@
 import React from 'react'
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import footerStyles from '../styles/FooterStyle';
 
 
 const Footer = () => {
+    const theme = useTheme();
     return (
-        <Box sx={footerStyles.footerContainer}>
-            <Typography sx={footerStyles.footerText}>
+        <Box sx={footerStyles.footerContainer(theme)}>
+            <Typography sx={footerStyles.footerText(theme)}>
                 © {new Date().getFullYear()} MovieApp. All rights reserved.
             </Typography>
         </Box>

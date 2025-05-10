@@ -1,15 +1,16 @@
 const footerStyles = {
-    footerContainer: {
-        backgroundColor: '#0d1b2a',
-        color: '#ffffff',
+    footerContainer: (theme) => ({
+        backgroundColor: theme.palette.background.paper,
+        color: theme.palette.text.primary,
         textAlign: 'center',
         py: 2,
         mt: 'auto',
-    },
+    }),
 
-    footerText: {
+    footerText: (theme) => ({
         fontSize: { xs: '0.8rem', sm: '1rem' },
-    },
+        color: theme.palette.text.secondary,
+    }),
 };
 
 export default footerStyles;

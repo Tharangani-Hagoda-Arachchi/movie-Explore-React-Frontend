@@ -1,9 +1,9 @@
 const headerStyles = {
 
-    appBar: {
+    appBar: (theme) => ({
         position: 'static',
-        backgroundColor: '#0d1b2a',
-    },
+        backgroundColor: 'theme.palette.primary.main',
+    }),
 
     toolbar: {
         justifyContent: 'space-between',
@@ -19,7 +19,7 @@ const headerStyles = {
     logoText: {
         fontSize: { xs: '1rem', sm: '1.25rem' },
         mr: 1,
-        color: '#fff',
+        color: 'inherit',
     },
 
     iconGroup: {
@@ -28,7 +28,7 @@ const headerStyles = {
     },
 
     iconButton: {
-        color: '#ffffff', // white by default
+        color: 'inherit', // white by default
         '&:hover': {
             color: '#90caf9', // light blue on hover
         },
@@ -80,8 +80,6 @@ const headerStyles = {
         },
     },
 };
-
-
 
 
 export default headerStyles;
