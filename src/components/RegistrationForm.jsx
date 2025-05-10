@@ -1,9 +1,10 @@
 import React from 'react'
 import {Box, Container, Typography,TextField,FormControlLabel,Checkbox,Button,Link} from "@mui/material"
 import registrationFormStyles from '../styles/RegistrationFromStyle'
-import {  Link as RouterLink } from 'react-router-dom'
+import {  Link as RouterLink, useNavigate } from 'react-router-dom'
 import { Formik,Form,} from 'formik'
 import * as Yup from 'yup'
+import axios from 'axios'
 
 //password valdation regex
 const passwordVallidation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}$/
@@ -32,11 +33,36 @@ const RegistrationForm = () => {
   }
 
   // form submition hanndle
-  const handleSubmit = (values, { setSubmitting }) => {
-    console.log('Registration data:', values)
-    setSubmitting(false)
-  }
+  const navigate = useNavigate()
+  const handleSubmit = async (values, { setSubmitting, setStatus, resetForm }) => {
+    try {
+      //POST request to your backend API
+      const response = await axios.post('http://localhost:4000/api/auths/signup', {
+        userName: values.userName,
+        userPassword: values.userPassword
+      })
+  
+      // Show success or redirect
+      setStatus({ success: true, message: 'Registration successful! Redirecting to login...' })
 
+      resetForm()
+      setSubmitting(false)
+      
+      //navigate loging to after 2s
+      setTimeout(() => {
+        navigate('/') 
+      }, 2000)
+
+    } catch (error) {
+      console.error('Registration error:', error.response?.data || error.message)
+      const message =error.response?.data?.message || 'Registration failed. Please try again.'
+      setStatus({ success: false, message })
+      
+    } finally {
+      setSubmitting(false)
+    }
+}
+  
   return (
     <Container maxWidth='sm' sx={registrationFormStyles.container}>
         <Box sx={registrationFormStyles.transparentBox}>
@@ -47,7 +73,7 @@ const RegistrationForm = () => {
           onSubmit={handleSubmit}
           >
             {
-              ({  errors, touched, isSubmitting, handleChange, values }) =>(
+              ({  errors, touched, isSubmitting, handleChange, values,status }) =>(
                 <Form noValidate sx={registrationFormStyles.form}>
                 <TextField
                   placeholder="Enter username"
@@ -101,12 +127,25 @@ const RegistrationForm = () => {
                 <Button type="submit" variant="contained" fullWidth disabled={isSubmitting} sx={registrationFormStyles.button}>
                   Sign Up
                 </Button>
+                
+                {status?.message && (
+                  <Typography
+                    variant="body2"
+                    align="center"
+                    color={status.success ? 'success.main' : 'error'}
+                    sx={{ mt: 2 }}
+                  >
+                    {status.message}
+                  </Typography>
+                )}
+                
                 <Typography variant="body2" align="center" sx={registrationFormStyles.loginLink}>
                   Already have an account?{' '}
                   <Link component={RouterLink} to="/">
                     Log in
                   </Link>
                 </Typography>
+
               </Form>
             )
             }
