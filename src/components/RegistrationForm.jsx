@@ -1,6 +1,7 @@
 import React from 'react'
 import {Box, Container, Typography,TextField,FormControlLabel,Checkbox,Button,Link} from "@mui/material"
 import registrationFormStyles from '../styles/RegistrationFromStyle'
+import { Link as RouterLink } from 'react-router-dom'
 
 const RegistrationForm = () => {
   return (
@@ -38,7 +39,7 @@ const RegistrationForm = () => {
           </Button>
           <Typography variant="body2" align="center" sx={registrationFormStyles.loginLink}>
             Already have an account?{' '}
-            <Link >
+            <Link component={RouterLink} to="/">
               Log in
             </Link>
           </Typography>
