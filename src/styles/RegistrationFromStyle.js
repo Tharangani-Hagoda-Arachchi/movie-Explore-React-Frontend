@@ -1,7 +1,7 @@
 
 const registrationFormStyles = {
     container: {
-      mt: 8,
+      mt: 3,
       px: 1,// for small devices
       
     },
@@ -67,7 +67,7 @@ const registrationFormStyles = {
     },
 
     checkbox: {
-      mb: 2,
+      mb: 1,
       with: '100%',
       color: '#ccc',
       '& .MuiSvgIcon-root': {
