@@ -5,19 +5,19 @@ import backgroundImage from '../assets/registration-brackground.jpg'
 import loginPageStyles from '../styles/LoginPageStyle';
 
 const LoginPage = () => {
-  return (
-    //add background image
-    <Box
-      sx={{
-        ...loginPageStyles.backgroundWrapper,
-        backgroundImage: `url(${backgroundImage})`, 
-      }}
-    >
-      <Box sx={loginPageStyles.formContainer}>
-        <LoginForm />
-      </Box>
-    </Box>
-  )
+    return (
+        //add background image
+        <Box
+            sx={{
+                ...loginPageStyles.backgroundWrapper,
+                backgroundImage: `url(${backgroundImage})`,
+            }}
+        >
+            <Box sx={loginPageStyles.formContainer}>
+                <LoginForm />
+            </Box>
+        </Box>
+    )
 }
 
 export default LoginPage

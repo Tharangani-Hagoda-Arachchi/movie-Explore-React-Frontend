@@ -7,8 +7,8 @@ import PrivateRoute from "./privateRoutes/PrivateRoute";
 
 function App() {
   return (
-      <BrowserRouter>
-      <CssBaseline/>
+    <BrowserRouter>
+      <CssBaseline />
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegistrationPage />} />

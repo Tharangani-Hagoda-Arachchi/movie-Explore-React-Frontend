@@ -8,7 +8,7 @@ const registrationPageStyles = {
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
-    backgroundColor: '#f0f0f0',  
+    backgroundColor: '#f0f0f0',
     px: 2,
     flexDirection: { xs: 'column', md: 'row' },
   },

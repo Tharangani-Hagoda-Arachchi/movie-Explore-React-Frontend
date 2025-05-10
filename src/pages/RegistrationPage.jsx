@@ -10,14 +10,14 @@ const RegistrationPage = () => {
     <Box
       sx={{
         ...registrationPageStyles.backgroundWrapper,
-        backgroundImage: `url(${backgroundImage})`, 
+        backgroundImage: `url(${backgroundImage})`,
       }}
     >
       <Box sx={registrationPageStyles.formContainer}>
         <RegistrationForm />
       </Box>
     </Box>
-    
+
   )
 }
 

@@ -1,8 +1,8 @@
 import React from 'react'
-import {Box, Container, Typography,TextField,FormControlLabel,Checkbox,Button,Link} from "@mui/material"
+import { Box, Container, Typography, TextField, FormControlLabel, Checkbox, Button, Link } from "@mui/material"
 import registrationFormStyles from '../styles/RegistrationFromStyle'
-import {  Link as RouterLink, useNavigate } from 'react-router-dom'
-import { Formik,Form,} from 'formik'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import { Formik, Form, } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
 
@@ -24,7 +24,7 @@ const validationSchema = Yup.object({
 const RegistrationForm = () => {
 
   // inetialze the values
-  const intialValues ={
+  const intialValues = {
     userName: '',
     userPassword: '',
     confirmPassword: '',
@@ -37,43 +37,43 @@ const RegistrationForm = () => {
   const handleSubmit = async (values, { setSubmitting, setStatus, resetForm }) => {
     try {
       //POST request to your backend API
-      const response = await axios.post('http://localhost:4000/api/auths/signup', {
+       await axios.post('http://localhost:4000/api/auths/signup', {
         userName: values.userName,
         userPassword: values.userPassword
       })
-  
+
       // Show success or redirect
       setStatus({ success: true, message: 'Registration successful! Redirecting to login...' })
 
       resetForm()
       setSubmitting(false)
-      
+
       //navigate loging 
-        navigate('/') 
+      navigate('/')
 
 
     } catch (error) {
       console.error('Registration error:', error.response?.data || error.message)
-      const message =error.response?.data?.message || 'Registration failed. Please try again.'
+      const message = error.response?.data?.message || 'Registration failed. Please try again.'
       setStatus({ success: false, message })
-      
+
     } finally {
       setSubmitting(false)
     }
-}
-  
+  }
+
   return (
     <Container maxWidth='sm' sx={registrationFormStyles.container}>
-        <Box sx={registrationFormStyles.transparentBox}>
-         <Typography component='h1' variant='h'sx={registrationFormStyles.title}>SIGN UP</Typography>
-         <Formik 
-         initialValues={intialValues}
+      <Box sx={registrationFormStyles.transparentBox}>
+        <Typography component='h1' variant='h' sx={registrationFormStyles.title}>SIGN UP</Typography>
+        <Formik
+          initialValues={intialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
-          >
-            {
-              ({  errors, touched, isSubmitting, handleChange, values,status }) =>(
-                <Form noValidate sx={registrationFormStyles.form}>
+        >
+          {
+            ({ errors, touched, isSubmitting, handleChange, values, status }) => (
+              <Form noValidate sx={registrationFormStyles.form}>
                 <TextField
                   placeholder="Enter username"
                   fullWidth
@@ -86,7 +86,7 @@ const RegistrationForm = () => {
                   helperText={touched.userName && errors.userName}
                   sx={registrationFormStyles.textField}
                 />
-               <TextField
+                <TextField
                   placeholder="Enter password"
                   fullWidth
                   required
@@ -96,7 +96,7 @@ const RegistrationForm = () => {
                   onChange={handleChange}
                   error={touched.userPassword && Boolean(errors.userPassword)}
                   helperText={touched.userPassword && errors.userPassword}
-                  sx={registrationFormStyles.textField}   
+                  sx={registrationFormStyles.textField}
                 />
                 <TextField
                   placeholder="Re-Enter password"
@@ -111,12 +111,12 @@ const RegistrationForm = () => {
                   sx={registrationFormStyles.textField}
                 />
                 <FormControlLabel
-                  control={<Checkbox value="agree" color="primary" name='agree'checked={values.agree}
-                  onChange={handleChange} />}
-                  label="Agree Terms and Conditions" 
+                  control={<Checkbox value="agree" color="primary" name='agree' checked={values.agree}
+                    onChange={handleChange} />}
+                  label="Agree Terms and Conditions"
                   sx={registrationFormStyles.checkbox}
                 />
-                
+
                 {touched.agree && errors.agree && (
                   <Typography color="error" variant="caption" sx={{ ml: 5 }}>
                     {errors.agree}
@@ -126,7 +126,7 @@ const RegistrationForm = () => {
                 <Button type="submit" variant="contained" fullWidth disabled={isSubmitting} sx={registrationFormStyles.button}>
                   Sign Up
                 </Button>
-                
+
                 {status?.message && (
                   <Typography
                     variant="body2"
@@ -147,10 +147,10 @@ const RegistrationForm = () => {
 
               </Form>
             )
-            }
+          }
 
-         </Formik>
-        </Box>   
+        </Formik>
+      </Box>
     </Container>
   )
 }
