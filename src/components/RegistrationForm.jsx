@@ -48,10 +48,9 @@ const RegistrationForm = () => {
       resetForm()
       setSubmitting(false)
       
-      //navigate loging to after 2s
-      setTimeout(() => {
+      //navigate loging 
         navigate('/') 
-      }, 2000)
+
 
     } catch (error) {
       console.error('Registration error:', error.response?.data || error.message)
@@ -138,7 +137,7 @@ const RegistrationForm = () => {
                     {status.message}
                   </Typography>
                 )}
-                
+
                 <Typography variant="body2" align="center" sx={registrationFormStyles.loginLink}>
                   Already have an account?{' '}
                   <Link component={RouterLink} to="/">
