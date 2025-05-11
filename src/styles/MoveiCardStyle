@@ -1,0 +1,72 @@
+import React, { useState } from 'react';
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  IconButton,
+  Box,
+  Rating,
+} from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import movieCardStyles from '../styles/MoveiCardStyle';
+
+const MovieCard = ({ movie}) => {
+
+  const {
+    title,
+    poster_path,
+    release_date,
+    vote_average,
+  } = movie;
+
+  const releaseYear = release_date ? release_date.split('-')[0] : 'N/A';
+  const imageUrl = poster_path
+    ? https://image.tmdb.org/t/p/w500/${poster_path}
+     'https://via.placeholder.com/500x750?text=No+Image';
+
+  return (
+    <Card sx={movieCardStyles.card}>
+      <CardMedia
+        component="img"
+        image={imageUrl}
+        alt={title}
+        sx={movieCardStyles.media}
+      />
+      <CardContent>
+        <Box sx={movieCardStyles.titleSection}>
+          <Typography variant="subtitle1" noWrap fontWeight="bold">
+            {title}
+          </Typography>
+          <IconButton
+            onClick={() => setFavorited(!favorited)}
+            color="error"
+            size="small"
+          >
+            {favorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          </IconButton>
+        </Box>
+
+        <Typography variant="body2" sx={movieCardStyles.releaseText}>
+          Release: {releaseYear}
+        </Typography>
+
+        <Box sx={movieCardStyles.ratingBox}>
+          <Rating
+            name="read-only"
+            value={vote_average / 2}
+            readOnly
+            precision={0.5}
+            size="small"
+          />
+          <Typography variant="caption" sx={movieCardStyles.ratingText}>
+            ({vote_average.toFixed(1)})
+          </Typography>
+        </Box>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default MovieCard; 
