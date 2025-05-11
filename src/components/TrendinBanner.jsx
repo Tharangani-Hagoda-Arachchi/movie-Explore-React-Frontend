@@ -14,9 +14,12 @@ import StarIcon from '@mui/icons-material/Star';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import TrendingBanerStyles from '../styles/TrendingBanner';
+import { useNavigate } from 'react-router-dom';
+
 
 const TrendingBanner = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { movies, loading, error } = useSelector((state) => state.trending);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -53,6 +56,13 @@ const TrendingBanner = () => {
   
   const movie = movies[currentIndex];
 
+  
+
+  const handleWatchNow = () => {
+    navigate(`/movie/${movie.id}`);
+  };
+
+
   return (
     <Box sx={TrendingBanerStyles.container}>
       <Card sx={{ position: 'relative' }}>
@@ -82,7 +92,7 @@ const TrendingBanner = () => {
               </Typography>
             </Box>
 
-            <Button variant="contained" color="primary" sx={TrendingBanerStyles.watchButton}>
+            <Button variant="contained" color="primary" onClick={handleWatchNow} sx={TrendingBanerStyles.watchButton}>
               Watch Now
             </Button>
           </Box>
@@ -107,6 +117,7 @@ const TrendingBanner = () => {
       </IconButton>
     </Box>
   );
-};
+}
+
 
 export default TrendingBanner;

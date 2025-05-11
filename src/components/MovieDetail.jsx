@@ -1,3 +1,4 @@
+// src/pages/MovieDetail.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
@@ -19,59 +20,24 @@ import {
 import StarIcon from '@mui/icons-material/Star';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMovieDetails, toggleFavorite } from '../features/trending/moveieSlice'
 import { movieDetailStyles as styles } from '../styles/MovieDetailStyle';
-
-const API_KEY = '40754d07f053d301eb5480ae894fdaca';
-
-const getFavoriteIds = () => JSON.parse(localStorage.getItem('favorites')) || [];
-const toggleFavorite = (movieId) => {
-  const current = getFavoriteIds();
-  const updated = current.includes(movieId)
-    ? current.filter(id => id !== movieId)
-    : [...current, movieId];
-  localStorage.setItem('favorites', JSON.stringify(updated));
-  return updated;
-};
 
 const MovieDetail = () => {
   const { id } = useParams();
-  const [movie, setMovie] = useState(null);
-  const [credits, setCredits] = useState(null);
-  const [trailerKey, setTrailerKey] = useState(null);
+  const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(true);
-  const [favoriteIds, setFavoriteIds] = useState(getFavoriteIds());
+  const { movie, credits, trailerKey, loading, favorites } = useSelector((state) => state.movie);
+
   const [openTrailerDialog, setOpenTrailerDialog] = useState(false);
 
   useEffect(() => {
-    const fetchMovieDetails = async () => {
-      setLoading(true);
-      try {
-        const [detailsRes, creditsRes, videosRes] = await Promise.all([
-          axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=en-US`),
-          axios.get(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=${API_KEY}`),
-          axios.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}`),
-        ]);
+    dispatch(fetchMovieDetails(id));
+  }, [dispatch, id]);
 
-        setMovie(detailsRes.data);
-        setCredits(creditsRes.data);
-
-        const trailer = videosRes.data.results.find(v => v.type === 'Trailer' && v.site === 'YouTube');
-        if (trailer) setTrailerKey(trailer.key);
-      } catch (error) {
-        console.error('Failed to fetch movie details:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMovieDetails();
-  }, [id]);
-
-  const handleFavoriteToggle = (movieId) => {
-    const updated = toggleFavorite(movieId);
-    setFavoriteIds(updated);
+  const handleFavoriteToggle = () => {
+    dispatch(toggleFavorite(movie.id));
   };
 
   const handleOpenTrailerDialog = () => setOpenTrailerDialog(true);
@@ -82,8 +48,8 @@ const MovieDetail = () => {
 
   const { title, overview, backdrop_path, vote_average, genres, runtime } = movie || {};
   const cast = credits?.cast?.slice(0, 6) || [];
-  const director = credits?.crew?.find((person) => person.job === 'Director');
-  const writer = credits?.crew?.find((person) => person.job === 'Writer' || person.job === 'Screenplay');
+  const director = credits?.crew?.find((person) => person.job === 'Director') || {};
+  const writer = credits?.crew?.find((person) => person.job === 'Writer' || person.job === 'Screenplay') || {};
 
   return (
     <Box sx={{ p: 2, maxWidth: '1200px', mx: 'auto' }}>
@@ -96,8 +62,8 @@ const MovieDetail = () => {
 
       <Box sx={styles.titleWrapper}>
         <Typography variant="h3" fontWeight="bold" gutterBottom>{title}</Typography>
-        <IconButton onClick={() => handleFavoriteToggle(movie.id)} color="error">
-          {favoriteIds.includes(movie.id) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+        <IconButton onClick={handleFavoriteToggle} color="error">
+          {favorites.includes(movie.id) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
       </Box>
 
@@ -116,19 +82,15 @@ const MovieDetail = () => {
       </Box>
 
       <Box sx={{ mb: 3 }}>
-        {director && (
+        {director.name && (
           <Typography variant="body1"><strong>Director:</strong> {director.name}</Typography>
         )}
-        {writer && (
+        {writer.name && (
           <Typography variant="body1"><strong>Writer:</strong> {writer.name}</Typography>
         )}
       </Box>
 
-      <Button
-        variant="contained"
-        onClick={handleOpenTrailerDialog}
-        sx={styles.trailerButton}
-      >
+      <Button variant="contained" onClick={handleOpenTrailerDialog} sx={styles.trailerButton}>
         Watch Trailer
       </Button>
 
@@ -147,9 +109,7 @@ const MovieDetail = () => {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseTrailerDialog} color="primary">
-            Close
-          </Button>
+          <Button onClick={handleCloseTrailerDialog} color="primary">Close</Button>
         </DialogActions>
       </Dialog>
 

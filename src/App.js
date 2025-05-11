@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import PrivateRoute from "./privateRoutes/PrivateRoute";
 import { lightTheme, darkTheme } from './themes/ModeThemes';
+import MoveiDetailPage from './pages/MoveiDetailPage';
 
 
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="/register" element={<RegistrationPage />} />
           <Route element={<PrivateRoute />}>
             <Route path="/home" element={<HomePage darkMode={darkMode} setDarkMode={setDarkMode} />} />
+            <Route path="/movie/:id" element={<MoveiDetailPage darkMode={darkMode} setDarkMode={setDarkMode} />} />
           </Route>
         </Routes>
       </BrowserRouter>
